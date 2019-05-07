@@ -1,90 +1,49 @@
 def get_first_name_of_season_winner(data, season)
-  # code here	  # code here
-# binding.pry
-
-     data[season].each do |people|
-
-       people.each do |k,v|
-        if v == "Winner"
-            full_name = people["name"]
-            return full_name.split(' ').first
-        end 
-      end
+  data[season].each do |contestant_hash|
+    if contestant_hash["status"].downcase == "winner"
+      return contestant_hash["name"].split(" ").first
     end
-end	end
+  end
+end
 
-
-
-
- def get_contestant_name(data, occupation)	def get_contestant_name(data, occupation)
-
-   data.each do |season, array|
-    array.each do |people|
-      people.each do |k,v|
-        if v == occupation
-          return people["name"]
-        end
+def get_contestant_name(data, occupation)
+  data.each do |season, contestants|
+    contestants.each do |contestant_hash|
+      if contestant_hash["occupation"] == occupation
+        return contestant_hash["name"]
       end
     end
   end
-  # code here	  # code here
-end	end
+end
 
-
-
-
-
- def count_contestants_by_hometown(data, hometown)	def count_contestants_by_hometown(data, hometown)
-  # code here	  # code here
-counter = 0
-  data.each do |season, array|
-    array.each do |hash|
-      hash.each do |k,v|
-        if v == hometown
-          counter += 1
-        end
-      end
-    end
-  end
-counter
-
- end	end
-
-
-
-
-
- def get_occupation(data, hometown)	def get_occupation(data, hometown)
-  # code here	  # code here
-  data.each do |season, array|
-    array.each do |hash|
-      hash.each do |k,v|
-        if v == hometown
-          return hash["occupation"]
-        end
-      end
-    end
-  end
-
- end	end
-
-
-
-
-
- def get_average_age_for_season(data, season)	def get_average_age_for_season(data, season)
-  # code here	  # code here
-age = 0
-count = 0
-  data[season].each do |hash|
-    hash.each do |k,v|
-      if k == "age"
+def count_contestants_by_hometown(data, hometown)
+  count = 0
+  data.each do |season, contestants|
+    contestants.each do |contestant_hash|
+      if contestant_hash["hometown"] == hometown
         count += 1
-        age += v.to_f
       end
     end
   end
+  count
+end
 
-   answer = (age/count).round
-return answer
-end	end
+def get_occupation(data, hometown)
+  data.each do |season, contestants|
+    contestants.each do |contestant_hash|
+      if contestant_hash["hometown"] == hometown
+        return contestant_hash['occupation']
+      end
+    end
+  end
+end
+
+def get_average_age_for_season(data, season)
+  age_total = 0
+  num_of_contestants = 0
+  data[season].each do |contestant_hash|
+    age_total += (contestant_hash["age"]).to_i
+    num_of_contestants += 1
+  end
+  (age_total / num_of_contestants.to_f).round(0)
+end
